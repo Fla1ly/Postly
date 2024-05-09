@@ -12,6 +12,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Snackbar from "@mui/material/Snackbar";
+import Alert, { AlertColor } from "@mui/material/Alert";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Copyright(props: any) {
@@ -40,6 +42,13 @@ export default function SignUp() {
   const [emailError, setEmailError] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [submitClicked, setSubmitClicked] = useState<boolean>(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -75,11 +84,20 @@ export default function SignUp() {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
+        setSnackbarOpen(true);
+        setSnackbarMessage("Successfully signed up");
+        setSnackbarSeverity("success");
       } else {
         console.error("Failed to sign up");
+        setSnackbarOpen(true);
+        setSnackbarMessage("Failed to sign up");
+        setSnackbarSeverity("error");
       }
     } catch (error) {
       console.error("Failed to sign up");
+      setSnackbarOpen(true);
+      setSnackbarMessage("Failed to sign up");
+      setSnackbarSeverity("error");
     }
   };
 
@@ -178,6 +196,10 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
+            <Typography variant="body2" color="textSecondary" align="center">
+              By signing up, you agree to our Terms of Service and Privacy
+              Policy
+            </Typography>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2">
@@ -187,6 +209,19 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+        >
+          <Alert
+            onClose={handleSnackbarClose}
+            severity={snackbarSeverity as AlertColor}
+            sx={{ width: "100%" }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
         <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>

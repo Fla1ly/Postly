@@ -254,11 +254,28 @@ export default function MiniDrawer({
         </List>
         <Box sx={{ flexGrow: 1 }} />
         {open ? (
-          <Stack sx={{display: 'flex', gap: 1, width: '100%', justifyContent: 'center', alignItems: 'center', mb: 1}}>
-            <Button variant="contained" sx={{width: '95%'}} onClick={() => navigate("/login")}>
+          <Stack
+            sx={{
+              display: "flex",
+              gap: 1,
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              mb: 1,
+            }}
+          >
+            <Button
+              variant="contained"
+              sx={{ width: "95%" }}
+              onClick={() => navigate("/login")}
+            >
               Login
             </Button>
-            <Button variant="contained" sx={{width: '95%'}} onClick={() => navigate("/signup")}>
+            <Button
+              variant="contained"
+              sx={{ width: "95%" }}
+              onClick={() => navigate("/signup")}
+            >
               Signup
             </Button>
           </Stack>
@@ -274,7 +291,9 @@ export default function MiniDrawer({
           overflow: "auto",
         }}
       >
-        <Box sx={{ width: "100%" }}>{children}</Box>
+        <Box sx={{ width: "98.75%", mt: "2%",}}>
+          {children}
+        </Box>
       </Box>
     </Box>
   );
