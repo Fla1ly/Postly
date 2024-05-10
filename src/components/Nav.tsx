@@ -110,6 +110,7 @@ export default function MiniDrawer({
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -117,6 +118,12 @@ export default function MiniDrawer({
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("username");
+    navigate("/");
   };
 
   return (
@@ -190,34 +197,56 @@ export default function MiniDrawer({
             </ListItem>
           ))}
         </List>
-        <Divider />
-        <List>
-          {["Account", "Create Blog", "Archive"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index === 0 && <AccountCircleIcon />}
-                  {index === 1 && <DesignServicesIcon />}
-                  {index === 2 && <InventoryIcon />}
-                  {index === 3 && <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+        {isLoggedIn ? (
+          <>
+            <Divider />
+            <List>
+              {["Account", "Create Blog", "Archive"].map((text, index) => (
+                <ListItem key={text} disablePadding sx={{ display: "block" }}>
+                  <ListItemButton
+                    onClick={() => {
+                      switch (index) {
+                        case 0:
+                          navigate("/account");
+                          break;
+                        case 1:
+                          navigate("/create");
+                          break;
+                        case 2:
+                          navigate("/archive");
+                          break;
+                        default:
+                          break;
+                      }
+                    }}
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {index === 0 && <AccountCircleIcon />}
+                      {index === 1 && <DesignServicesIcon />}
+                      {index === 2 && <InventoryIcon />}
+                      {index === 3 && <MailIcon />}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={text}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </>
+        ) : null}
         <Divider />
         <List>
           {[
@@ -253,7 +282,7 @@ export default function MiniDrawer({
           ))}
         </List>
         <Box sx={{ flexGrow: 1 }} />
-        {open ? (
+        {open && !isLoggedIn ? (
           <Stack
             sx={{
               display: "flex",
@@ -279,6 +308,25 @@ export default function MiniDrawer({
               Signup
             </Button>
           </Stack>
+        ) : open && isLoggedIn ? (
+          <Stack
+            sx={{
+              display: "flex",
+              gap: 1,
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              mb: 1,
+            }}
+          >
+            <Button
+              variant="contained"
+              sx={{ width: "95%" }}
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </Stack>
         ) : null}
       </Drawer>
       <Box
@@ -291,7 +339,7 @@ export default function MiniDrawer({
           overflow: "auto",
         }}
       >
-        <Box sx={{ width: "98.75%", mt: "2%",}}>
+        <Box sx={{ width: "98.75%", mt: "2%" }}>
           {children}
         </Box>
       </Box>

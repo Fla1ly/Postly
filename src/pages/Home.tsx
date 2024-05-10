@@ -4,7 +4,7 @@ import { Typography, Stack, Button } from "@mui/material";
 
 export default function Home() {
   const navigate = useNavigate();
-  // const isLoggedIn = localStorage.getItem('isLoggedIn');
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   return (
     <NavBarContent>
@@ -37,6 +37,11 @@ export default function Home() {
             >
               <Typography variant="h2">Welcome!</Typography>
               <Typography variant="h5">Get started quickly!</Typography>
+              {isLoggedIn ? (
+                <Typography variant="h6">
+                  <strong>logged in</strong>
+                </Typography>
+              ) : null}
               <Typography variant="h6">
                 Sign up or log in to get started
               </Typography>
