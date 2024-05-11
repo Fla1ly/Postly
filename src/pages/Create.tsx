@@ -1,5 +1,10 @@
 import NavbarContent from "../components/Nav";
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import PermMediaIcon from "@mui/icons-material/PermMedia";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +13,8 @@ export default function Create() {
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [characters, setCharacters] = useState<number>(0);
+  const [exceedLimit, setExceedLimit] = useState<boolean>(false);
   const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   if (!isLoggedIn) {
@@ -58,6 +65,17 @@ export default function Create() {
     }
   };
 
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setDescription(value);
+    setCharacters(value.length);
+    if (value.length > 2000) {
+      setExceedLimit(true);
+    } else {
+      setExceedLimit(false);
+    }
+  };
+
   return (
     <NavbarContent>
       <Stack sx={{ display: "flex", flexDirection: "row" }}>
@@ -92,7 +110,12 @@ export default function Create() {
             multiline
             rows={15}
             variant="outlined"
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={handleDescriptionChange}
+            error={exceedLimit}
+            helperText={exceedLimit ? "Description exceeds 2000 characters" : null}
+            InputProps={{
+              endAdornment: <span style={{ opacity: 0.75 }}>{characters}/2000</span>,
+            }}
           />
           <Stack sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
             <Button
