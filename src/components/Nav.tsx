@@ -364,7 +364,7 @@ export default function MiniDrawer({
           overflow: "auto",
         }}
       >
-        <Box sx={{ width: "98.75%", mt: "2%" }}>{children}</Box>
+        <Box sx={{ width: "98.75%", mt: "2%", border: '1px red solid' }}>{children}</Box>
       </Box>
     </Box>
   );
