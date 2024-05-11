@@ -1,12 +1,6 @@
 import NavbarContent from "../components/Nav";
-import {
-  Button,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import PermMediaIcon from "@mui/icons-material/PermMedia";
 import { useNavigate } from "react-router-dom";
 
 export default function Create() {
@@ -23,21 +17,21 @@ export default function Create() {
 
   const handleSubmit = async () => {
     try {
+      const postData = {
+        title: title,
+        description: description,
+      };
       const response = await fetch("http://localhost:5000/postly/createPost", {
         method: "POST",
+        body: JSON.stringify(postData),
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          title,
-          description,
-        }),
       });
       if (!response.ok) {
         throw new Error("Post creation failed");
       }
       console.log("Post created successfully");
-      navigate("/");
     } catch (error) {
       console.error("Error creating post:", error);
     }
@@ -76,6 +70,7 @@ export default function Create() {
     }
   };
 
+
   return (
     <NavbarContent>
       <Stack sx={{ display: "flex", flexDirection: "row" }}>
@@ -88,21 +83,6 @@ export default function Create() {
             variant="outlined"
             onChange={(e) => setTitle(e.target.value)}
           />
-          <Button
-            variant="outlined"
-            sx={{
-              width: "12.5%",
-              fontSize: "12.5px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 1,
-              mt: 1,
-            }}
-          >
-            <PermMediaIcon sx={{ fontSize: "20px" }} />
-            Add Media
-          </Button>
           <TextField
             sx={{ mt: 1 }}
             id="outlined-multiline-static"
@@ -112,9 +92,13 @@ export default function Create() {
             variant="outlined"
             onChange={handleDescriptionChange}
             error={exceedLimit}
-            helperText={exceedLimit ? "Description exceeds 2000 characters" : null}
+            helperText={
+              exceedLimit ? "Description exceeds 2000 characters" : null
+            }
             InputProps={{
-              endAdornment: <span style={{ opacity: 0.75 }}>{characters}/2000</span>,
+              endAdornment: (
+                <span style={{ opacity: 0.75 }}>{characters}/2000</span>
+              ),
             }}
           />
           <Stack sx={{ display: "flex", flexDirection: "row", gap: 1 }}>

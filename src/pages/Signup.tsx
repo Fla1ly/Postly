@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -115,12 +113,13 @@ export default function SignUp() {
         setEmailError("");
       }
     }
+    setEmailError("");
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+      <CssBaseline />
+      <Container component="main" maxWidth="xs" sx={{ position: 'relative', minHeight: '90vh' }}>
         <Box
           sx={{
             marginTop: 8,
@@ -179,14 +178,6 @@ export default function SignUp() {
                   onChange={(event) => setPassword(event.target.value)}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -222,7 +213,9 @@ export default function SignUp() {
             {snackbarMessage}
           </Alert>
         </Snackbar>
-        <Copyright sx={{ mt: 5 }} />
+        <Box sx={{ position: 'absolute', bottom: 0, width: '100%', textAlign: 'center' }}>
+          <Copyright />
+        </Box>
       </Container>
     </ThemeProvider>
   );

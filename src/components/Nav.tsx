@@ -111,6 +111,7 @@ export default function MiniDrawer({
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const username = localStorage.getItem("username");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -146,9 +147,33 @@ export default function MiniDrawer({
           {open ? (
             <Typography variant="h6" noWrap component="div"></Typography>
           ) : (
-            <Typography variant="h6" noWrap component="div">
-              Postly
-            </Typography>
+            <Stack
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
+              <Typography variant="h6" noWrap component="div">
+                Postly
+              </Typography>
+              <Stack
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 0.5,
+                }}
+              >
+                <Typography variant="h6" sx={{fontSize: '15px'}} noWrap component="div">
+                  {username &&
+                    username.charAt(0).toUpperCase() + username.slice(1)}
+                </Typography>
+                <AccountCircleIcon />
+              </Stack>
+            </Stack>
           )}
         </Toolbar>
       </AppBar>
