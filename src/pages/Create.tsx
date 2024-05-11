@@ -13,6 +13,14 @@ import { useNavigate } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";
 import Alert, { AlertColor } from "@mui/material/Alert";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 export default function Create() {
   const navigate = useNavigate();
@@ -23,6 +31,9 @@ export default function Create() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [openDialog, setOpenDialog] = useState(false);
+  const [visibility, setVisibility] = useState<string>("");
+  const [tempVisibility, setVisibilityTemp] = useState<string>("");
   const isLoggedIn = localStorage.getItem("isLoggedIn");
 
   if (!isLoggedIn) {
@@ -71,6 +82,30 @@ export default function Create() {
       setSnackbarMessage("Failed to create post");
       setSnackbarSeverity("error");
     }
+  };
+
+  const handleChangeVisibility = (
+    event: SelectChangeEvent<typeof visibility>
+  ) => {
+    setVisibilityTemp(String(event.target.value) || "");
+  };
+
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleClose = (
+    _event: React.SyntheticEvent<unknown>,
+    reason?: string
+  ) => {
+    if (reason !== "backdropClick") {
+      setOpenDialog(false);
+    }
+  };
+
+  const handleCloseOk = () => {
+    setVisibility(tempVisibility);
+    setOpenDialog(false);
   };
 
   // const handleSaveDraft = async () => {
@@ -203,11 +238,6 @@ export default function Create() {
                   <Typography>
                     Status: <b>Draft</b>
                   </Typography>
-                  <Typography
-                    sx={{ textDecoration: "Underline", color: "#0070ff" }}
-                  >
-                    Edit
-                  </Typography>
                 </Stack>
                 <Stack
                   sx={{
@@ -217,13 +247,56 @@ export default function Create() {
                   }}
                 >
                   <Typography>
-                    Visibility: <b>Private</b>
+                    Visibility: <b>{visibility}</b>
                   </Typography>
                   <Typography
-                    sx={{ textDecoration: "Underline", color: "#0070ff" }}
+                    sx={{
+                      textDecoration: "Underline",
+                      color: "#0070ff",
+                      "&:hover": { cursor: "pointer" },
+                    }}
+                    onClick={handleClickOpen}
                   >
                     Edit
                   </Typography>
+                  <Dialog
+                    disableEscapeKeyDown
+                    open={openDialog}
+                    onClose={handleClose}
+                  >
+                    <DialogTitle>Change The Visibility</DialogTitle>
+                    <DialogContent>
+                      <Box
+                        component="form"
+                        sx={{ display: "flex", flexWrap: "wrap" }}
+                      >
+                        <FormControl sx={{ m: 1, minWidth: 120 }}>
+                          <InputLabel htmlFor="demo-dialog-native">
+                            Visibility
+                          </InputLabel>
+                          <Select
+                            native
+                            value={tempVisibility}
+                            onChange={handleChangeVisibility}
+                            input={
+                              <OutlinedInput
+                                label="Visibility"
+                                id="demo-dialog-native"
+                              />
+                            }
+                          >
+                            <option aria-label="None" value="" />
+                            <option value="Public">Public</option>
+                            <option value="Private">Private</option>
+                          </Select>
+                        </FormControl>
+                      </Box>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose}>Cancel</Button>
+                      <Button onClick={handleCloseOk}>Ok</Button>
+                    </DialogActions>
+                  </Dialog>
                 </Stack>
               </Stack>
             </Stack>
