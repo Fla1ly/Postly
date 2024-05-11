@@ -73,27 +73,27 @@ export default function Create() {
     }
   };
 
-  const handleSaveDraft = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/postly/saveDraft", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          description,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error("Draft save failed");
-      }
-      console.log("Draft saved successfully");
-      navigate("/");
-    } catch (error) {
-      console.error("Error saving draft:", error);
-    }
-  };
+  // const handleSaveDraft = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:5000/postly/saveDraft", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         title,
+  //         description,
+  //       }),
+  //     });
+  //     if (!response.ok) {
+  //       throw new Error("Draft save failed");
+  //     }
+  //     console.log("Draft saved successfully");
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.error("Error saving draft:", error);
+  //   }
+  // };
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -149,7 +149,7 @@ export default function Create() {
             sx={{
               border: "1px #c4c4c4 solid",
               width: "100%",
-              height: "100%",
+              height: "42.85%",
               mt: 1,
               borderRadius: "5px",
             }}
@@ -231,7 +231,7 @@ export default function Create() {
             <Divider />
             <Stack
               sx={{
-                height: "11.25%",
+                height: "50px",
                 width: "100%",
                 background: "#f5f5f5",
                 display: "flex",
@@ -255,7 +255,11 @@ export default function Create() {
                     "&:hover": { cursor: "pointer" },
                   }}
                 />
-                <Button variant="contained" sx={{ textTransform: "none" }}>
+                <Button
+                  variant="contained"
+                  sx={{ textTransform: "none" }}
+                  onClick={handleSubmit}
+                >
                   Publish
                 </Button>
               </Stack>

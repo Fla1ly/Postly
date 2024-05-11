@@ -18,7 +18,6 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
 /* Icons */
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -31,6 +30,8 @@ import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import HelpIcon from "@mui/icons-material/Help";
 import SourceIcon from "@mui/icons-material/Source";
 import IntegrationInstructionsIcon from "@mui/icons-material/IntegrationInstructions";
+import ArchiveIcon from "@mui/icons-material/Archive";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 
 const drawerWidth = 240;
 
@@ -167,7 +168,12 @@ export default function MiniDrawer({
                   gap: 0.5,
                 }}
               >
-                <Typography variant="h6" sx={{fontSize: '15px'}} noWrap component="div">
+                <Typography
+                  variant="h6"
+                  sx={{ fontSize: "15px" }}
+                  noWrap
+                  component="div"
+                >
                   {username &&
                     username.charAt(0).toUpperCase() + username.slice(1)}
                 </Typography>
@@ -226,7 +232,13 @@ export default function MiniDrawer({
           <>
             <Divider />
             <List>
-              {["Account", "Create Blog", "Archive"].map((text, index) => (
+              {[
+                "Account",
+                "Create Blog",
+                "Your Blogs",
+                "Drafts",
+                "Archive",
+              ].map((text, index) => (
                 <ListItem key={text} disablePadding sx={{ display: "block" }}>
                   <ListItemButton
                     onClick={() => {
@@ -258,9 +270,10 @@ export default function MiniDrawer({
                       }}
                     >
                       {index === 0 && <AccountCircleIcon />}
-                      {index === 1 && <DesignServicesIcon />}
+                      {index === 1 && <PostAddIcon />}
                       {index === 2 && <InventoryIcon />}
-                      {index === 3 && <MailIcon />}
+                      {index === 3 && <DesignServicesIcon />}
+                      {index === 4 && <ArchiveIcon />}
                     </ListItemIcon>
                     <ListItemText
                       primary={text}
@@ -364,7 +377,7 @@ export default function MiniDrawer({
           overflow: "auto",
         }}
       >
-        <Box sx={{ width: "98.75%", mt: "2%", border: '1px red solid' }}>{children}</Box>
+        <Box sx={{ width: "98.75%", mt: "2%" }}>{children}</Box>
       </Box>
     </Box>
   );
