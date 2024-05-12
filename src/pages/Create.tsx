@@ -21,6 +21,60 @@ import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Chip from "@mui/material/Chip";
+import Grid from "@mui/material/Grid";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+const categories = [
+  "Travel",
+  "Technology",
+  "Fashion",
+  "Finance",
+  "Education",
+  "Sports",
+  "Lifestyle",
+  "Business",
+  "Art & Design",
+  "Science",
+  "Politics",
+  "Real Estate",
+];
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
 export default function Create() {
   const navigate = useNavigate();
@@ -32,16 +86,38 @@ export default function Create() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [openDialog, setOpenDialog] = useState(false);
+  const [status, setStatus] = useState<string>("");
   const [visibility, setVisibility] = useState<string>("");
   const [tempVisibility, setVisibilityTemp] = useState<string>("");
+  const [value, setValue] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
 
   if (!isLoggedIn) {
     navigate("/login");
   }
 
+  if (status === "") {
+    setStatus("Editing");
+  }
+
+  if (selectedCategory === "") {
+    setSelectedCategory("Not chosen");
+  }
+
+  const handleChangeTab = (_event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
+  };
+
+  const handleChipClick = (category: string) => {
+    setSelectedCategory(category);
+    console.log("Selected category:", { category });
   };
 
   const handleSubmit = async () => {
@@ -57,11 +133,26 @@ export default function Create() {
       setSnackbarSeverity("error");
       return;
     }
+    if (visibility === "") {
+      setSnackbarOpen(true);
+      setSnackbarMessage("Visibility cannot be empty");
+      setSnackbarSeverity("error");
+      return;
+    }
+    if (selectedCategory === "Not chosen") {
+      setSnackbarOpen(true);
+      setSnackbarMessage("Category not selected");
+      setSnackbarSeverity("error");
+      return;
+    }
     try {
       const postData = {
         title: title,
         description: description,
-        createdBy: localStorage.getItem("username"),
+        author: localStorage.getItem("username"),
+        visibility: visibility,
+        category: selectedCategory,
+        status: "Published",
       };
       const response = await fetch("http://localhost:5000/postly/createPost", {
         method: "POST",
@@ -76,11 +167,13 @@ export default function Create() {
       setSnackbarOpen(true);
       setSnackbarMessage("Successfully created post");
       setSnackbarSeverity("success");
+      setStatus("Published");
     } catch (error) {
       console.error("Error creating post:", error);
       setSnackbarOpen(true);
       setSnackbarMessage("Failed to create post");
       setSnackbarSeverity("error");
+      setStatus("Pending");
     }
   };
 
@@ -108,27 +201,61 @@ export default function Create() {
     setOpenDialog(false);
   };
 
-  // const handleSaveDraft = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:5000/postly/saveDraft", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         title,
-  //         description,
-  //       }),
-  //     });
-  //     if (!response.ok) {
-  //       throw new Error("Draft save failed");
-  //     }
-  //     console.log("Draft saved successfully");
-  //     navigate("/");
-  //   } catch (error) {
-  //     console.error("Error saving draft:", error);
-  //   }
-  // };
+  const handleSaveDraft = async () => {
+    if (title === "" || description === "") {
+      setSnackbarOpen(true);
+      setSnackbarMessage("Title and description cannot be empty");
+      setSnackbarSeverity("error");
+      return;
+    }
+    if (exceedLimit) {
+      setSnackbarOpen(true);
+      setSnackbarMessage("Description exceeds 2000 characters");
+      setSnackbarSeverity("error");
+      return;
+    }
+    if (visibility === "") {
+      setSnackbarOpen(true);
+      setSnackbarMessage("Visibility cannot be empty");
+      setSnackbarSeverity("error");
+      return;
+    }
+    if (selectedCategory === "Not chosen") {
+      setSnackbarOpen(true);
+      setSnackbarMessage("Category not selected");
+      setSnackbarSeverity("error");
+      return;
+    }
+    try {
+      const postData = {
+        title: title,
+        description: description,
+        author: localStorage.getItem("username"),
+        visibility: visibility,
+        category: selectedCategory,
+        status: "Draft",
+      };
+      const response = await fetch("http://localhost:5000/postly/createDraft", {
+        method: "POST",
+        body: JSON.stringify(postData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Draft creation failed");
+      }
+      setSnackbarOpen(true);
+      setSnackbarMessage("Successfully created draft");
+      setSnackbarSeverity("success");
+      setStatus("Published");
+    } catch (error) {
+      console.error("Error creating draft:", error);
+      setSnackbarOpen(true);
+      setSnackbarMessage("Failed to create draft");
+      setSnackbarSeverity("error");
+    }
+  };
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -164,7 +291,7 @@ export default function Create() {
             id="outlined-multiline-static"
             label="Enter Description"
             multiline
-            rows={15}
+            rows={20}
             variant="outlined"
             onChange={handleDescriptionChange}
             error={exceedLimit}
@@ -184,7 +311,7 @@ export default function Create() {
             sx={{
               border: "1px #c4c4c4 solid",
               width: "100%",
-              height: "42.85%",
+              height: "40%",
               mt: 1,
               borderRadius: "5px",
             }}
@@ -210,7 +337,11 @@ export default function Create() {
                   justifyContent: "space-between",
                 }}
               >
-                <Button variant="outlined" sx={{ textTransform: "none" }}>
+                <Button
+                  onClick={handleSaveDraft}
+                  variant="outlined"
+                  sx={{ textTransform: "none" }}
+                >
                   Save Draft
                 </Button>
                 <Button variant="outlined" sx={{ textTransform: "none" }}>
@@ -232,12 +363,25 @@ export default function Create() {
                   sx={{
                     display: "flex",
                     flexDirection: "row",
+                    width: "100%",
+                    justifyContent: "space-between",
                     gap: 0.75,
                   }}
                 >
                   <Typography>
-                    Status: <b>Draft</b>
+                    Status: <b>{status}</b>
                   </Typography>
+                  <Stack
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: 0.75,
+                    }}
+                  >
+                    <Typography>
+                      Category: <b>{selectedCategory}</b>
+                    </Typography>
+                  </Stack>
                 </Stack>
                 <Stack
                   sx={{
@@ -304,7 +448,7 @@ export default function Create() {
             <Divider />
             <Stack
               sx={{
-                height: "50px",
+                height: "27.2%",
                 width: "100%",
                 background: "#f5f5f5",
                 display: "flex",
@@ -335,6 +479,84 @@ export default function Create() {
                 >
                   Publish
                 </Button>
+              </Stack>
+            </Stack>
+          </Box>
+          <Box
+            sx={{
+              border: "1px #c4c4c4 solid",
+              width: "100%",
+              height: "60%",
+              mt: 1,
+              borderRadius: "5px",
+            }}
+          >
+            <Typography sx={{ p: 1 }}>
+              <b>Category</b>
+            </Typography>
+            <Divider />
+            <Stack
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mt: 1,
+              }}
+            >
+              <Stack
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "95%",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Stack>
+                  <Box sx={{ width: "100%" }}>
+                    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                      <Tabs
+                        value={value}
+                        onChange={handleChangeTab}
+                        aria-label="basic tabs example"
+                      >
+                        <Tab label="All Categories" {...a11yProps(0)} />
+                        <Tab label="Coming soon" {...a11yProps(1)} />
+                      </Tabs>
+                    </Box>
+                    <CustomTabPanel value={value} index={0}>
+                      <Grid container spacing={1}>
+                        {categories.map((category, index) => (
+                          <Grid
+                            item
+                            xs={matches && category.length > 10 ? 3 : 3}
+                            sm={matches && category.length > 10 ? 3 : 3}
+                            key={index}
+                          >
+                            <Chip
+                              sx={{
+                                border:
+                                  selectedCategory === category
+                                    ? "1px #1976d2 solid"
+                                    : "1px #c4c4c4 solid",
+                                background:
+                                  selectedCategory === category
+                                    ? "#e0f0ff"
+                                    : "#fff",
+                                "&:hover": { cursor: "pointer" },
+                              }}
+                              label={category}
+                              onClick={() => handleChipClick(category)}
+                            />
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={1}>
+                      Coming soon
+                    </CustomTabPanel>
+                  </Box>
+                </Stack>
               </Stack>
             </Stack>
           </Box>
