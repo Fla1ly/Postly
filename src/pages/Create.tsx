@@ -79,8 +79,12 @@ function a11yProps(index: number) {
 export default function Create() {
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>("");
+  const [subtitle, setSubtitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [characters, setCharacters] = useState<number>(0);
+  const [, setSubtitleCharacters] = useState<number>(0);
+  const [subtitleExceedLimit, setSubtitleExceedLimit] =
+    useState<boolean>(false);
   const [exceedLimit, setExceedLimit] = useState<boolean>(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -133,6 +137,12 @@ export default function Create() {
       setSnackbarSeverity("error");
       return;
     }
+    if (subtitleExceedLimit) {
+      setSnackbarOpen(true);
+      setSnackbarMessage("Subtitle exceeds 200 characters");
+      setSnackbarSeverity("error");
+      return;
+    }
     if (visibility === "") {
       setSnackbarOpen(true);
       setSnackbarMessage("Visibility cannot be empty");
@@ -145,9 +155,11 @@ export default function Create() {
       setSnackbarSeverity("error");
       return;
     }
+    console.log("subtitle:", subtitle);
     try {
       const postData = {
         title: title,
+        subtitle: subtitle,
         description: description,
         author: localStorage.getItem("username"),
         visibility: visibility,
@@ -214,6 +226,12 @@ export default function Create() {
       setSnackbarSeverity("error");
       return;
     }
+    if (subtitleExceedLimit) {
+      setSnackbarOpen(true);
+      setSnackbarMessage("Subtitle exceeds 200 characters");
+      setSnackbarSeverity("error");
+      return;
+    }
     if (visibility === "") {
       setSnackbarOpen(true);
       setSnackbarMessage("Visibility cannot be empty");
@@ -229,6 +247,7 @@ export default function Create() {
     try {
       const postData = {
         title: title,
+        subtitle: subtitle,
         description: description,
         author: localStorage.getItem("username"),
         visibility: visibility,
@@ -254,6 +273,17 @@ export default function Create() {
       setSnackbarOpen(true);
       setSnackbarMessage("Failed to create draft");
       setSnackbarSeverity("error");
+    }
+  };
+
+  const handleSubtitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSubtitle(value);
+    setSubtitleCharacters(value.length);
+    if (value.length > 200) {
+      setSubtitleExceedLimit(true);
+    } else {
+      setSubtitleExceedLimit(false);
     }
   };
 
@@ -288,6 +318,17 @@ export default function Create() {
           />
           <TextField
             sx={{ mt: 2 }}
+            id="outlined-basic"
+            label="Enter Subtitle"
+            variant="outlined"
+            onChange={handleSubtitleChange}
+            error={subtitleExceedLimit}
+            helperText={
+              subtitleExceedLimit ? "Subtitle exceeds 200 characters" : null
+            }
+          />
+          <TextField
+            sx={{ mt: 2 }}
             id="outlined-multiline-static"
             label="Enter Description"
             multiline
@@ -311,7 +352,7 @@ export default function Create() {
             sx={{
               border: "1px #c4c4c4 solid",
               width: "100%",
-              height: "40%",
+              height: "35.8%",
               mt: 1,
               borderRadius: "5px",
             }}
@@ -486,7 +527,7 @@ export default function Create() {
             sx={{
               border: "1px #c4c4c4 solid",
               width: "100%",
-              height: "60%",
+              height: "65%",
               mt: 1,
               borderRadius: "5px",
             }}

@@ -17,7 +17,6 @@ import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
-
 /* Icons */
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -208,6 +207,18 @@ export default function MiniDrawer({
           {["Home", "Blogs"].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
+                onClick={() => {
+                  switch (index) {
+                    case 0:
+                      navigate("/");
+                      break;
+                    case 1:
+                      navigate("/blogs");
+                      break;
+                    default:
+                      break;
+                  }
+                }}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
