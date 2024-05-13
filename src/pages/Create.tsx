@@ -180,6 +180,9 @@ export default function Create() {
       setSnackbarMessage("Successfully created post");
       setSnackbarSeverity("success");
       setStatus("Published");
+      setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     } catch (error) {
       console.error("Error creating post:", error);
       setSnackbarOpen(true);
