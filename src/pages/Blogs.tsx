@@ -53,10 +53,10 @@ const Blogs: React.FC = () => {
     fetchBlogs();
   }, []);
 
-  const getRandomImage = () => {
-    const uniqueId = Math.floor(Math.random() * 1000000);
-    return `https://source.unsplash.com/random/${uniqueId}`;
-  };
+  // const getRandomImage = () => {
+  //   const uniqueId = Math.floor(Math.random() * 1000000);
+  //   return `https://source.unsplash.com/random/${uniqueId}`;
+  // };
 
   return (
     <NavbarContent>
@@ -108,12 +108,12 @@ const Blogs: React.FC = () => {
               post={{
                 author: blog.author,
                 title: blog.title,
+                date : blog.date,
                 category: blog.category,
                 subtitle: blog.subtitle,
                 description: blog.description,
                 dateCreated: blog.dateCreated,
-                image: getRandomImage(),
-                imageLabel: "Image Text",
+                // imageLabel: "Image Text",
               }}
             />
           ))}

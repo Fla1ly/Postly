@@ -10,7 +10,17 @@ import {
   Button,
 } from "@mui/material";
 
-function FeaturedPost({ post }) {
+interface post {
+  category: string;
+  author: string;
+  title: string;
+  dateCreated: string;
+  subtitle: string;
+  description: string;
+  date: string;
+}
+
+function FeaturedPost({ post }: { post: post }) {
   const limitedDescription =
     post.description.length > 300
       ? `${post.description.slice(0, 300)}...`
@@ -51,6 +61,9 @@ function FeaturedPost({ post }) {
             </Stack>
             <Divider />
             <Typography variant="subtitle1" color="text.secondary">
+              {post.subtitle}
+            </Typography>
+            <Typography variant="subtitle1">
               {limitedDescription}
             </Typography>
           </CardContent>
