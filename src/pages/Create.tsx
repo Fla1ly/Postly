@@ -76,6 +76,8 @@ function a11yProps(index: number) {
   };
 }
 
+/* create a new post */
+
 export default function Create() {
   const navigate = useNavigate();
   const [title, setTitle] = useState<string>("");
