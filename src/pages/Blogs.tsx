@@ -1,5 +1,6 @@
 import NavbarContent from "../components/Nav";
-import { Typography, Stack } from "@mui/material";
+import { Typography, Stack, Button } from "@mui/material";
+import { useState } from "react";
 // import CssBaseline from "@mui/material/CssBaseline";
 // import Grid from "@mui/material/Grid";
 // import Container from "@mui/material/Container";
@@ -24,7 +25,24 @@ const categories = [
 ];
 
 export default function Blogs() {
+  const [, setBlogs] = useState([]);
   //   const navigate = useNavigate();
+
+  const fetchBlogs = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/postly/fetchBlogs", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setBlogs(data);
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    }
+  };
 
   return (
     <NavbarContent>
@@ -62,6 +80,7 @@ export default function Blogs() {
           </Typography>
         ))}
       </Stack>
+      <Button onClick={fetchBlogs}>Fetch Blogs Test</Button>
     </NavbarContent>
   );
 }
