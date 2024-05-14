@@ -30,6 +30,8 @@ const categories = [
   "Real Estate",
 ];
 
+// Blogs component
+
 const Blogs: React.FC = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
 
