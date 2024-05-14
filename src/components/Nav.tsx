@@ -16,6 +16,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import Badge from "@mui/material/Badge";
 
 /* Icons */
 import MenuIcon from "@mui/icons-material/Menu";
@@ -283,7 +284,11 @@ export default function MiniDrawer({
                     >
                       {index === 0 && <AccountCircleIcon />}
                       {index === 1 && <PostAddIcon />}
-                      {index === 2 && <InventoryIcon />}
+                      {index === 2 && (
+                        <Badge badgeContent={4} color="primary">
+                          <InventoryIcon />
+                        </Badge>
+                      )}
                       {index === 3 && <DesignServicesIcon />}
                       {index === 4 && <ArchiveIcon />}
                     </ListItemIcon>

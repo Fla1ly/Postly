@@ -1,10 +1,10 @@
-// Blogs.tsx
 import React, { useState, useEffect } from "react";
 import NavbarContent from "../components/Nav";
 import { Typography, Stack } from "@mui/material";
 import FeaturedPost from "../components/post";
 
 interface Blog {
+  id: string;
   category: string;
   author: string;
   title: string;
@@ -52,11 +52,6 @@ const Blogs: React.FC = () => {
   useEffect(() => {
     fetchBlogs();
   }, []);
-
-  // const getRandomImage = () => {
-  //   const uniqueId = Math.floor(Math.random() * 1000000);
-  //   return `https://source.unsplash.com/random/${uniqueId}`;
-  // };
 
   return (
     <NavbarContent>
@@ -106,14 +101,14 @@ const Blogs: React.FC = () => {
             <FeaturedPost
               key={index}
               post={{
+                id: blog.id,
                 author: blog.author,
                 title: blog.title,
-                date : blog.date,
+                date: blog.date,
                 category: blog.category,
                 subtitle: blog.subtitle,
                 description: blog.description,
                 dateCreated: blog.dateCreated,
-                // imageLabel: "Image Text",
               }}
             />
           ))}
