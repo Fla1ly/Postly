@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Create from "./pages/Create";
 import Blogs from "./pages/Blogs";
 import SingleBlog from "./pages/SingleBlog";
+import Inventory from "./pages/Inventory";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/create" element={<Create />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/blog/:postId" element={<SingleBlog />} />
+        <Route path="/inventory" element={<Inventory />} />
         <Route path="/test" element={<h1>Test</h1>} />
       </Routes>
     </Router>

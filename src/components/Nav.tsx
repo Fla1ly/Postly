@@ -263,7 +263,7 @@ export default function MiniDrawer({
                           navigate("/create");
                           break;
                         case 2:
-                          navigate("/archive");
+                          navigate("/Inventory");
                           break;
                         default:
                           break;
