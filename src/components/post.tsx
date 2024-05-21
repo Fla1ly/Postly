@@ -30,7 +30,7 @@ function FeaturedPost({ post }: { post: Post }) {
       : post.description;
 
   const handleSingleBlogClick = () => {
-    navigate(`/blog/${post.id}`); // Updated path
+    navigate(`/blog/${post.id}`);
   };
 
   return (
