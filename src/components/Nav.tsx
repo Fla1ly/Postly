@@ -1,5 +1,5 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import * as React from "react";
 import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -33,6 +33,7 @@ import SourceIcon from "@mui/icons-material/Source";
 import IntegrationInstructionsIcon from "@mui/icons-material/IntegrationInstructions";
 import ArchiveIcon from "@mui/icons-material/Archive";
 import PostAddIcon from "@mui/icons-material/PostAdd";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 
 const drawerWidth = 240;
 
@@ -85,6 +86,8 @@ const AppBar = styled(MuiAppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
+  display: "flex",
+  justifyContent: "space-between",
 }));
 
 const Drawer = styled(MuiDrawer, {
@@ -129,6 +132,14 @@ export default function MiniDrawer({
     navigate("/");
   };
 
+  const openPDFUserGuide = () => {
+    window.open("./src/assets/docs/userguide.pdf", "_blank");
+  };
+
+  const openPDFItpersonell = () => {
+    window.open("./src/assets/docs/IT-personell.pdf", "_blank");
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -146,42 +157,39 @@ export default function MiniDrawer({
           >
             <MenuIcon />
           </IconButton>
-          {open ? (
-            <Typography variant="h6" noWrap component="div"></Typography>
-          ) : (
+          <Stack
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              border: "1px red solid",
+              width: "100%",
+              flexDirection: "row",
+            }}
+          >
+            <Typography variant="h6" noWrap component="div">
+              Postly
+            </Typography>
             <Stack
               sx={{
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "space-between",
-                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 0.5,
               }}
             >
-              <Typography variant="h6" noWrap component="div">
-                Postly
-              </Typography>
-              <Stack
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  gap: 0.5,
-                }}
+              <Typography
+                variant="h6"
+                sx={{ fontSize: "15px" }}
+                noWrap
+                component="div"
               >
-                <Typography
-                  variant="h6"
-                  sx={{ fontSize: "15px" }}
-                  noWrap
-                  component="div"
-                >
-                  {username &&
-                    username.charAt(0).toUpperCase() + username.slice(1)}
-                </Typography>
-                <AccountCircleIcon />
-              </Stack>
+                {username &&
+                  username.charAt(0).toUpperCase() + username.slice(1)}
+              </Typography>
+              <AccountCircleIcon />
             </Stack>
-          )}
+          </Stack>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -309,10 +317,31 @@ export default function MiniDrawer({
             "User Guide",
             "IT Personel",
             "Documentation",
+            "FAQ",
           ].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
-                onClick={index === 0 ? () => navigate("/test") : undefined}
+                onClick={() => {
+                  switch (index) {
+                    case 0:
+                      navigate("/support");
+                      break;
+                    case 1:
+                      openPDFUserGuide();
+                      break;
+                    case 2:
+                      openPDFItpersonell();
+                      break;
+                    case 3:
+                      navigate("/Documentation");
+                      break;
+                    case 4:
+                      navigate("/FAQ");
+                      break;
+                    default:
+                      break;
+                  }
+                }}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? "initial" : "center",
@@ -330,6 +359,7 @@ export default function MiniDrawer({
                   {index === 1 && <HelpIcon />}
                   {index === 2 && <SourceIcon />}
                   {index === 3 && <IntegrationInstructionsIcon />}
+                  {index === 4 && <QuestionAnswerIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
