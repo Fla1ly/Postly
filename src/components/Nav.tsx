@@ -161,7 +161,6 @@ export default function MiniDrawer({
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              border: "1px red solid",
               width: "100%",
               flexDirection: "row",
             }}

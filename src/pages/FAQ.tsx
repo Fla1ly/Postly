@@ -9,7 +9,7 @@ import { Stack } from "@mui/material";
 export default function FAQ() {
   return (
     <NavbarContent>
-      <Typography variant="h4" align="center" sx={{ mt: 5 }}>
+      <Typography variant="h4" align="center" sx={{ mt: 5, mb: 5 }}>
         Frequently Asked Questions
       </Typography>
       <Stack >
