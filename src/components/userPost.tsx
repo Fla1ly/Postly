@@ -5,7 +5,9 @@ import {
   Grid,
   Stack,
   Divider,
+  Button,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 interface userPost {
   id: string;
@@ -21,10 +23,16 @@ interface userPost {
 }
 
 function UserPost({ post }: { post: userPost }) {
+  const navigate = useNavigate();
+
   const limitedDescription =
     post.description.length > 300
       ? `${post.description.slice(0, 300)}...`
       : post.description;
+
+  const handleEditClick = () => {
+    navigate(`/editblog/${post.id}`);
+  };
 
   return (
     <Grid item xs={12} md={6}>
@@ -37,9 +45,21 @@ function UserPost({ post }: { post: userPost }) {
         }}
       >
         <CardContent sx={{ flex: 1 }}>
-          <Typography component="h2" variant="h5" mt={0.35}>
-            {post.title}
-          </Typography>
+          <Stack
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              width: "100%",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography component="h2" variant="h5" mt={0.35}>
+              {post.title}
+            </Typography>
+            <Button variant="outlined" onClick={handleEditClick}>
+              Edit
+            </Button>
+          </Stack>
           <Typography variant="subtitle1" color="text.secondary">
             {post.dateCreated}
           </Typography>

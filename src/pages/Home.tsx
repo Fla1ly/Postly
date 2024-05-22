@@ -35,40 +35,59 @@ export default function Home() {
                 alignItems: "center",
               }}
             >
-              <Typography variant="h2">Welcome!</Typography>
-              <Typography variant="h5">Get started quickly!</Typography>
-              {isLoggedIn ? (
-                <Typography variant="h6">
-                  <strong>logged in</strong>
+              <Stack
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                <Typography
+                  variant="h2"
+                  sx={{ display: "inline", marginRight: "10px" }}
+                >
+                  Welcome!
                 </Typography>
-              ) : null}
-              <Typography variant="h6">
-                Sign up or log in to get started
-              </Typography>
-            </Stack>
-            <Stack
-              sx={{
-                display: "flex",
-                gap: 1,
-                flexDirection: "row",
-                width: "100%",
-                mb: 1,
-              }}
-            >
-              <Button
-                variant="outlined"
-                sx={{ width: "100%" }}
-                onClick={() => navigate("/login")}
-              >
-                Login
-              </Button>
-              <Button
-                variant="outlined"
-                sx={{ width: "100%" }}
-                onClick={() => navigate("/signup")}
-              >
-                Signup
-              </Button>
+                {isLoggedIn ? (
+                  <Typography
+                    variant="h2"
+                    sx={{ display: "inline", marginLeft: "10px" }}
+                  >
+                    <strong>{localStorage.getItem("username")}</strong>
+                  </Typography>
+                ) : null}
+              </Stack>
+              {!isLoggedIn && (
+                <>
+                  <Typography variant="h5">Get started quickly!</Typography>
+                  <Typography variant="h6">
+                    Sign up or log in to get started
+                  </Typography>
+                  <Stack
+                    sx={{
+                      display: "flex",
+                      gap: 1,
+                      flexDirection: "row",
+                      width: "100%",
+                      mb: 1,
+                    }}
+                  >
+                    <Button
+                      variant="outlined"
+                      sx={{ width: "100%" }}
+                      onClick={() => navigate("/login")}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      sx={{ width: "100%" }}
+                      onClick={() => navigate("/signup")}
+                    >
+                      Signup
+                    </Button>
+                  </Stack>
+                </>
+              )}
             </Stack>
           </Stack>
           <Stack>

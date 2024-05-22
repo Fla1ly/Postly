@@ -69,9 +69,6 @@ const SingleBlog: React.FC = () => {
           <Typography variant="h5" gutterBottom>
             {blog.title}
           </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            {formattedDate} by {blog.author}
-          </Typography>
           <Stack
             sx={{
               display: "flex",
@@ -82,7 +79,7 @@ const SingleBlog: React.FC = () => {
             }}
           >
             <Typography variant="subtitle1" color="text.secondary">
-              Written by {blog.author}
+              {formattedDate} by {blog.author}
             </Typography>
             <Typography variant="subtitle1" color="text.secondary">
               {blog.category}
