@@ -140,6 +140,10 @@ export default function MiniDrawer({
     window.open("./src/assets/docs/IT-personell.pdf", "_blank");
   };
 
+  const openPDFtechnical = () => {
+    window.open("./src/assets/docs/teknisk.pdf", "_blank");
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -332,7 +336,7 @@ export default function MiniDrawer({
                       openPDFItpersonell();
                       break;
                     case 3:
-                      navigate("/Documentation");
+                      openPDFtechnical();
                       break;
                     case 4:
                       navigate("/FAQ");
