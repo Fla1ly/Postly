@@ -43,15 +43,19 @@ export default function SignIn() {
       if (!response.ok) {
         throw new Error("Login failed");
       }
-      console.log("Login successful");
+
+      const data = await response.json();
+      console.log("Login successfulasadsad");
+      console.log("Token:", data.token);
+      localStorage.setItem("tokenString", data.token);
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("username", formData.username);
+
       navigate("/");
     } catch (error) {
       console.error("Error logging in:", error);
     }
   };
-  // comment
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
