@@ -50,7 +50,6 @@ export default function SignIn() {
       localStorage.setItem("tokenString", data.token);
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("username", formData.username);
-
       navigate("/");
     } catch (error) {
       console.error("Error logging in:", error);
