@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { Typography, Stack, Card, CardContent, Divider } from "@mui/material";
 import NavbarContent from "../components/Nav";
 import { format } from "date-fns";
+import Comment from "../components/Comment";
+import CreateComment from "../components/CreateComment.tsx";
 
 interface Blog {
   category: string;
@@ -16,6 +18,7 @@ interface Blog {
 const SingleBlog: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
   const [blog, setBlog] = useState<Blog | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
 
   const fetchBlog = async () => {
     try {
@@ -37,6 +40,22 @@ const SingleBlog: React.FC = () => {
   };
 
   useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/postly/fetchComments/${postId}`
+        );
+        const data = await response.json();
+        setComments(data);
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+      }
+    };
+
+    fetchComments();
+  }, [postId]);
+
+  useEffect(() => {
     fetchBlog();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postId]);
@@ -45,7 +64,6 @@ const SingleBlog: React.FC = () => {
     return <Typography>Loading...</Typography>;
   }
 
-  // Format the date
   const formattedDate = format(new Date(blog.dateCreated), "MMMM d, yyyy");
 
   return (
@@ -92,6 +110,19 @@ const SingleBlog: React.FC = () => {
           <Typography variant="body1">{blog.description}</Typography>
         </CardContent>
       </Card>
+      <Stack
+        sx={{
+          width: "100%",
+          justifyContent: "center",
+        }}
+      >
+        <CreateComment />
+        <Stack sx={{ width: "50%" }}>
+          {comments.map((comment) => (
+            <Comment comment={comment} />
+          ))}
+        </Stack>
+      </Stack>
     </NavbarContent>
   );
 };

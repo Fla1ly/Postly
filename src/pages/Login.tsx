@@ -45,7 +45,7 @@ export default function SignIn() {
       }
 
       const data = await response.json();
-      console.log("Login successfulasadsad");
+      console.log("Login successful");
       console.log("Token:", data.token);
       localStorage.setItem("tokenString", data.token);
       localStorage.setItem("isLoggedIn", "true");
