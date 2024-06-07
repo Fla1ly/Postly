@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Avatar, Stack, Typography } from "@mui/material";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+// import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbDownAltIcon from "@mui/icons-material/ThumbDownAlt";
 
@@ -69,7 +69,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
   };
 
   return (
-    <Stack sx={{ display: "flex", flexDirection: "row", mt: 5 }}>
+    <Stack sx={{ display: "flex", flexDirection: "row", mt: 3 }}>
       <Stack>
         <Avatar />
       </Stack>
@@ -111,19 +111,6 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
             />
           )}
           <Typography sx={{ fontSize: "16px", ml: 2 }}>Reply</Typography>
-        </Stack>
-        <Stack
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            mt: 0.75,
-          }}
-        >
-          <KeyboardArrowDownIcon />
-          <Typography variant="body1" sx={{ ml: 1 }}>
-            0 replies
-          </Typography>
         </Stack>
       </Stack>
     </Stack>

@@ -16,7 +16,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import Badge from "@mui/material/Badge";
 
 /* Icons */
 import MenuIcon from "@mui/icons-material/Menu";
@@ -34,6 +33,7 @@ import IntegrationInstructionsIcon from "@mui/icons-material/IntegrationInstruct
 import ArchiveIcon from "@mui/icons-material/Archive";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import Badge from "@mui/material/Badge";
 
 const drawerWidth = 240;
 
@@ -117,6 +117,7 @@ export default function MiniDrawer({
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem("isLoggedIn");
   const username = localStorage.getItem("username");
+  
 
   const handleDrawerOpen = () => {
     setOpen(true);

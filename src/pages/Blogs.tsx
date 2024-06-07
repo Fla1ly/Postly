@@ -115,7 +115,7 @@ const Blogs: React.FC = () => {
             />
           ))}
         </Stack>
-        <Stack sx={{ border: "1px red solid", width: "30%" }}></Stack>
+        <Stack sx={{ width: "30%" }}></Stack>
       </Stack>
     </NavbarContent>
   );

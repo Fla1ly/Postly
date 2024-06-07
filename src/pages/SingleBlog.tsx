@@ -57,7 +57,6 @@ const SingleBlog: React.FC = () => {
 
   useEffect(() => {
     fetchBlog();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postId]);
 
   if (!blog) {
@@ -117,7 +116,7 @@ const SingleBlog: React.FC = () => {
         }}
       >
         <CreateComment />
-        <Stack sx={{ width: "50%" }}>
+        <Stack sx={{ width: "50%", mb: 3, mt: 3 }}>
           {comments.map((comment) => (
             <Comment comment={comment} />
           ))}
